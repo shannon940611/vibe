@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>國中歷史｜台灣史測驗</title>
+<style>
+:root{--ink:#172554;--blue:#2563eb;--pale:#eff6ff;--green:#15803d;--red:#b91c1c;--gold:#f59e0b}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;background:linear-gradient(135deg,#e0f2fe,#eef2ff 55%,#fef3c7);color:#1e293b;display:flex;align-items:center;justify-content:center;padding:22px}
+.app{width:min(760px,100%);background:#fff;border-radius:26px;box-shadow:0 18px 55px #1e3a8a20;overflow:hidden}
+header{background:linear-gradient(120deg,#1d4ed8,#4338ca);color:#fff;padding:28px 32px}
+.eyebrow{font-size:13px;letter-spacing:2px;opacity:.85;font-weight:700}
+h1{margin:8px 0 4px;font-size:clamp(25px,5vw,36px)}
+header p{margin:0;opacity:.9}
+main{padding:clamp(22px,5vw,38px)}
+.panel{display:none}.panel.active{display:block}
+body.quiz-mode header{display:none}
+.tag{display:inline-block;background:#dbeafe;color:#1d4ed8;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:800}
+.intro h2{font-size:25px;color:var(--ink);margin:16px 0 10px}
+.intro p,.intro li{line-height:1.85}
+.intro ul{padding-left:22px}
+.btn{border:0;border-radius:13px;padding:14px 22px;font-size:17px;font-weight:800;cursor:pointer;transition:transform .15s,filter .15s}
+.btn:hover{filter:brightness(.97);transform:translateY(-1px)}
+.primary{background:var(--blue);color:#fff}.secondary{background:#e2e8f0;color:#1e293b}
+.topline{display:flex;align-items:stretch;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.scorebox{background:#fff7ed;border:3px solid #fb923c;border-radius:16px;padding:12px 20px;text-align:center;min-width:210px;box-shadow:0 4px 0 #ffedd5}
+.scorebox small{display:block;font-size:13px;color:#9a3412;font-weight:900}
+.scorebox strong{font-size:32px;color:#c2410c;line-height:1.2}
+.scorebox .scoreline{display:flex;align-items:baseline;justify-content:center;gap:4px}
+.scorebox .scoreline .points{font-size:16px;color:#c2410c;font-weight:900}
+.scorebox .correct-count{margin-top:6px;padding-top:6px;border-top:1px solid #fdba74;font-size:16px;color:#9a3412;font-weight:900}
+#questionCount{display:flex;align-items:center;background:#dbeafe;color:#1d4ed8;border:2px solid #93c5fd;border-radius:14px;padding:12px 16px;font-size:18px;font-weight:950;min-height:58px}
+.question{font-size:clamp(20px,4vw,25px);font-weight:800;line-height:1.55;color:#172554;margin:18px 0 22px}
+.options{display:grid;gap:12px}
+.option{display:flex;align-items:flex-start;gap:12px;text-align:left;background:#fff;border:2px solid #dbe3ef;border-radius:14px;padding:15px 16px;font-size:17px;line-height:1.5;cursor:pointer;color:#1e293b}
+.option:hover:not(:disabled){border-color:#60a5fa;background:#f8fbff}
+.option .letter{flex:0 0 30px;height:30px;border-radius:9px;background:#eff6ff;color:#1d4ed8;display:grid;place-items:center;font-weight:900}
+.option.correct{border-color:#22c55e;background:#f0fdf4}.option.correct .letter{background:#16a34a;color:white}
+.option.wrong{border-color:#ef4444;background:#fef2f2}.option.wrong .letter{background:#dc2626;color:white}
+.feedback{margin-top:18px;padding:17px;border-radius:14px;line-height:1.8;display:none}
+.feedback.show{display:block}.feedback.good{background:#f0fdf4;border:1px solid #86efac}.feedback.bad{background:#fff7ed;border:1px solid #fdba74}
+.feedback strong{display:block;font-size:18px;margin-bottom:4px}
+.actionrow{display:flex;justify-content:flex-end;margin-top:20px}
+.result{text-align:center}
+.result .bigscore{font-size:clamp(48px,12vw,76px);font-weight:950;color:#1d4ed8;line-height:1.15;margin:16px 0}
+.result .comment{font-size:20px;font-weight:800;color:#172554}
+.result p{line-height:1.8}
+footer{text-align:center;color:#64748b;font-size:12px;padding:0 20px 22px}
+@media(max-width:480px){body{padding:10px}.app{border-radius:18px}header{padding:23px}main{padding:22px 18px}.option{font-size:16px;padding:13px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header id="siteHeader">
+  <div class="eyebrow">JUNIOR HIGH SCHOOL · HISTORY</div>
+  <h1>台灣史知識挑戰</h1>
+  <p>從史前文化到現代台灣，看看你掌握多少！</p>
+</header>
+<main>
+<section id="intro" class="panel intro active">
+  <span class="tag">任務說明</span>
+  <h2>準備好探索台灣歷史了嗎？</h2>
+  <p>完成以下 10 道國中程度的台灣史選擇題，測試你對重要人物、事件與時代變遷的理解。</p>
+  <ul>
+    <li><b>共 10 題</b>，每題 10 分，滿分 100 分。</li>
+    <li>每次只會出現一題，答對後會自動進入下一題。</li>
+    <li>答錯時會顯示正確答案與解析，閱讀後按「下一題」繼續。</li>
+    <li>畫面會即時累計分數，完成後可查看總成績與評語。</li>
+    <li>測驗結束後可以重新挑戰一次。</li>
+  </ul>
+  <button class="btn primary" id="startBtn">開始測驗 →</button>
+</section>
+
+<section id="quiz" class="panel">
+  <div class="topline">
+    <span class="tag" id="questionCount">第 1 題／共 10 題</span>
+    <div class="scorebox"><small>目前總分</small><div class="scoreline"><strong><span id="score">0</span></strong><span class="points">/ 100 分</span></div><div class="correct-count">答對題數：<span id="correctCount">0</span> / 10 題</div></div>
+  </div>
+  <div class="question" id="questionText"></div>
+  <div class="options" id="options"></div>
+  <div class="feedback" id="feedback" aria-live="polite"></div>
+  <div class="actionrow"><button class="btn primary" id="nextBtn" style="display:none">下一題 →</button></div>
+</section>
+
+<section id="result" class="panel result">
+  <span class="tag">測驗完成</span>
+  <h2>你的台灣史測驗成績</h2>
+  <div class="bigscore"><span id="finalScore">0</span><span style="font-size:25px;color:#64748b"> / 100</span></div>
+  <div class="comment" id="comment"></div>
+  <p id="resultText"></p>
+  <button class="btn primary" id="restartBtn" style="margin-top:22px">重新測驗 ↻</button>
+</section>
+</main>
+<footer>國中歷史・台灣史測驗｜加油，持續累積歷史知識！</footer>
+</div>
+<script>
+const questions = [
+ {q:"考古學家在台灣發現的「長濱文化」，主要屬於哪一個時期？",a:["新石器時代","舊石器時代","鐵器時代","歷史時代"],c:1,e:"長濱文化是台灣目前所知重要的舊石器時代文化，代表當時人群以採集、狩獵等方式維生。"},
+ {q:"台灣原住民族在漢人大量移入以前，主要以什麼方式維持生活？",a:["大規模工廠製造","以稻米出口為主的貿易","狩獵、採集、漁撈及農耕","以蒸汽火車運輸商品"],c:2,e:"台灣原住民族各族群的生活方式不同，常見生計包括狩獵、採集、漁撈與農耕，也發展出各自的文化與社會制度。"},
+ {q:"17 世紀初，曾在台灣南部建立據點並推動貿易的歐洲勢力是哪一國？",a:["西班牙","葡萄牙","英國","荷蘭"],c:3,e:"荷蘭東印度公司於 1624 年在台灣南部建立據點，後來以熱蘭遮城（今台南安平一帶）為重要統治中心。"},
+ {q:"西班牙勢力在 17 世紀曾主要占據台灣的哪個區域？",a:["北部與東北部","台灣最南端","澎湖以西的中國沿海","中央山脈"],c:0,e:"西班牙人在 1626 年進入台灣北部，據點包括雞籠（基隆）與淡水，並於 1642 年被荷蘭人逐出台灣。"},
+ {q:"鄭成功於 1661 至 1662 年擊敗哪一個勢力，取得台灣南部的控制權？",a:["西班牙","荷蘭","英國","日本"],c:1,e:"鄭成功率軍攻打荷蘭在台據點，荷蘭守軍於 1662 年投降。鄭氏政權隨後統治台灣西南部。"},
+ {q:"清朝在哪一年正式將台灣納入版圖，設立台灣府？",a:["1624 年","1662 年","1684 年","1895 年"],c:2,e:"清朝於 1683 年派兵攻台，鄭氏政權降清；1684 年設立台灣府，隸屬福建省。"},
+ {q:"清朝治理台灣時，為何曾限制漢人移民及渡台？",a:["因為台灣完全沒有耕地","為了禁止所有海上貿易","因為清朝已將台灣交給荷蘭","為了減少治安、土地衝突等治理問題"],c:3,e:"清廷曾透過渡台限制與移民管理降低治理風險，但實際執行有變化，仍有大量漢人移民來台開墾。"},
+ {q:"1895 年清朝因哪一場戰爭失敗，並依條約將台灣割讓給日本？",a:["甲午戰爭","鴉片戰爭","中法戰爭","第一次世界大戰"],c:0,e:"清朝在 1894 至 1895 年的甲午戰爭中戰敗，並於《馬關條約》中將台灣、澎湖割讓給日本。"},
+ {q:"日本統治台灣期間，以下哪一項是其推動的建設與政策之一？",a:["設立鄭氏王朝","興建鐵路並推動公共衛生措施","建立荷蘭東印度公司","設立清朝台灣府"],c:1,e:"日本統治時期推動鐵路、道路、公共衛生與教育等建設；這些政策也與殖民統治及經濟資源開發密切相關。"},
+ {q:"第二次世界大戰結束後，台灣在 1945 年由哪個政府接收？",a:["荷蘭政府","西班牙政府","中華民國政府","清朝政府"],c:2,e:"日本於 1945 年戰敗後，中華民國政府代表同盟國接收台灣。台灣戰後的政治與社會發展也因此進入新的階段。"}
+];
+let index=0, score=0, correctCount=0, locked=false, answers=[];
+const $=id=>document.getElementById(id);
+function showPanel(id){
+ document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+ $(id).classList.add('active');
+ document.body.classList.toggle('quiz-mode', id==='quiz');
+}
+function start(){index=0;score=0;correctCount=0;answers=[];locked=false;$('score').textContent=score;$('correctCount').textContent=correctCount;showPanel('quiz');renderQuestion();}
+function renderQuestion(){
+ locked=false;
+ const item=questions[index];
+ $('questionCount').textContent=`第 ${index+1} 題／共 ${questions.length} 題`;
+ $('score').textContent=score;
+ $('questionText').textContent=item.q;
+ $('options').innerHTML='';
+ $('feedback').className='feedback';$('feedback').innerHTML='';
+ $('nextBtn').style.display='none';
+ item.a.forEach((text,i)=>{
+  const b=document.createElement('button');b.className='option';
+  b.innerHTML=`<span class="letter">${String.fromCharCode(65+i)}</span><span>${text}</span>`;
+  b.addEventListener('click',()=>choose(i,b));$('options').appendChild(b);
+ });
+}
+function choose(choice,button){
+ if(locked)return;locked=true;
+ const item=questions[index], correct=choice===item.c;
+ answers.push({choice,correct});
+ document.querySelectorAll('.option').forEach((b,i)=>{b.disabled=true;if(i===item.c)b.classList.add('correct');});
+ if(correct){score+=10;correctCount++;$('score').textContent=score;$('correctCount').textContent=correctCount;$('feedback').className='feedback show good';$('feedback').innerHTML=`<strong>🎉 答對了！+10 分</strong>太棒了！繼續保持。`; }
+ else{$('feedback').className='feedback show bad';$('feedback').innerHTML=`<strong>📖 答錯了！</strong>正確答案：${item.a[item.c]}<br><b>解析：</b>${item.e}`;}
+ if(correct){setTimeout(()=>{if(index<questions.length-1){index++;renderQuestion();}else finish();},2000);}
+ else{$('nextBtn').textContent=index===questions.length-1?'查看總成績 →':'下一題 →';$('nextBtn').style.display='inline-block';}
+}
+function next(){if(index<questions.length-1){index++;renderQuestion();}else finish();}
+function finish(){
+ showPanel('result');$('finalScore').textContent=score;
+ let comment,detail;
+ if(score===100){comment='🏆 太厲害了！滿分達成！';detail='你對台灣史的重要時代與事件掌握得非常完整，請繼續保持！';}
+ else if(score>=80){comment='🌟 表現優異！';detail='你已經具備扎實的台灣史基礎，再複習少數細節就更好了。';}
+ else if(score>=60){comment='👍 及格了，繼續加油！';detail='你掌握了一些重要概念，建議再整理各時代的先後順序與代表事件。';}
+ else{comment='📚 再接再厲！';detail='歷史需要反覆整理與複習。從錯題的解析開始，再挑戰一次，你會進步的！';}
+ $('comment').textContent=comment;$('resultText').textContent=detail;
+}
+$('startBtn').addEventListener('click',start);$('nextBtn').addEventListener('click',next);$('restartBtn').addEventListener('click',()=>{showPanel('intro');});
+</script>
+</body>
+</html>
